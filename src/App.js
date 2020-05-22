@@ -4,16 +4,16 @@ import formSchema from "./formShema";
 import axios from "axios";
 import * as yup from "yup";
 
-import { Route, Switch, Link, Router } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 
 const initialFormValues = {
   name: "",
   size: "",
-  instr: "",
-  red: false,
-  garlic: false,
-  bbq: false,
-  spinach: false,
+  sauce: false,
+  // red: false,
+  // garlic: false,
+  // bbq: false,
+  // spinach: false,
 };
 
 const initialFormErrors = {
@@ -63,6 +63,29 @@ const App = () => {
     setFormValues({ ...formValues, [name]: value });
   };
 
+  const sauceChange = (event) => {
+    const name = event.target.name;
+    const id = event.target.id;
+
+    yup
+      .reach(formSchema, name)
+      .validate(id)
+      .then((valid) => {
+        setFormErrors({
+          ...formErrors,
+          [name]: "",
+        });
+      })
+      .catch((error) => {
+        setFormErrors({
+          ...formErrors,
+          [name]: error.errors[0],
+        });
+      });
+
+    setFormValues({ ...formValues, [name]: id });
+  };
+
   const postNewOrder = (newOrders) => {
     axios
       .post("https://reqres.in/", newOrders)
@@ -86,23 +109,34 @@ const App = () => {
 
   useEffect(() => {
     formSchema.isValid(formValues).then((valid) => {
-      console.log(valid);
+      // console.log(valid);
       setDisabled(!valid);
     });
   }, [formValues]);
 
   return (
     <div>
-      <h1>Lambda Eats</h1>
+      <Route path="/">
+        <h1>Lambda Eats</h1>
+      </Route>
+      <Link to="/">
+        <button>Home</button>
+      </Link>
+      <Link to="/pizza">
+        <button>Build Your Pizza!</button>
+      </Link>
 
-      <Form
-        values={formValues}
-        onInputChange={onInputChange}
-        onSubmit={onSubmit}
-        disabled={disabled}
-        errors={formErrors}
-        onCheckboxChange={onCheckboxChange}
-      />
+      <Route path="/pizza">
+        <Form
+          sauceChange={sauceChange}
+          values={formValues}
+          onInputChange={onInputChange}
+          onSubmit={onSubmit}
+          disabled={disabled}
+          errors={formErrors}
+          onCheckboxChange={onCheckboxChange}
+        />
+      </Route>
     </div>
   );
 };

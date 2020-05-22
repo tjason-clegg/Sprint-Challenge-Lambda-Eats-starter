@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 const Form = (props) => {
   const {
@@ -9,10 +8,11 @@ const Form = (props) => {
     disabled,
     errors,
     onCheckboxChange,
+    sauceChange,
   } = props;
 
   return (
-    <form>
+    <form onSubmit={onSubmit}>
       <div>
         <h2>Build Your Own Pizza</h2>
 
@@ -51,13 +51,18 @@ const Form = (props) => {
 
         <h3>Choice of Sauce *required</h3>
         <label>
-          <input type="radio" name="sauce" onChange={onInputChange} />
+          <input type="radio" name="sauce" id="red" onChange={sauceChange} />
           Original Red
-          <input type="radio" name="sauce" onChange={onInputChange} />
+          <input type="radio" name="sauce" id="garlic" onChange={sauceChange} />
           Garlic Ranch
-          <input type="radio" name="sauce" onChange={onInputChange} />
+          <input type="radio" name="sauce" id="bbq" onChange={sauceChange} />
           BBQ Sauce
-          <input type="radio" name="sauce" onChange={onInputChange} />
+          <input
+            type="radio"
+            name="sauce"
+            id="spinach"
+            onChange={sauceChange}
+          />
           Spinach Alfredo
         </label>
 
@@ -86,7 +91,7 @@ const Form = (props) => {
           <input type="checkbox" name="ExCheese" onChange={onCheckboxChange} />
           Extra Cheese
         </label>
-        <h3>Any Special Instructions?</h3>
+        {/* <h3>Any Special Instructions?</h3>
         <label>
           <input
             type="text"
@@ -96,7 +101,7 @@ const Form = (props) => {
             value={values.name}
             onChange={onInputChange}
           />
-        </label>
+        </label> */}
         <h3>Finalzie Order?</h3>
         <button className="order" disabled={disabled}>
           Add to Order

@@ -6,6 +6,9 @@ const formSchema = yup.object().shape({
     .string()
     .oneOf(["Small", "Medium", "Large"])
     .required("Please select a size"),
-  sauce: yup.boolean().oneOf([true]).required("Please select a sauce"),
+  sauce: yup
+    .string()
+    .oneOf(["red", "garlic", "bbq", "spinach"])
+    .required("Please select a sauce"),
 });
 export default formSchema;
